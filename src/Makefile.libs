@@ -1,0 +1,13 @@
+sources = $(wildcard *.c)
+objects = $(addprefix $(LIB_PATH)/, \
+				$(subst .c,.o,$(sources)))
+
+.PHONY : library
+
+library : $(library)
+
+$(library) : $(objects)
+	$(AR) $(ARFLAGS) $@ $^
+
+$(objects) : $(LIB_PATH)/%.o : %.c
+	$(CC) $^ $(CFLAGS) -o $@ -L$(LIB_PATH) $(LD_FLAGS)

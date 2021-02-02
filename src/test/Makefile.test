@@ -1,0 +1,16 @@
+target_path := $(addprefix $(BIN_PATH)/,	\
+					$(patsubst $(SRC_PATH)/test/%,%, $(shell pwd)))
+sources := $(wildcard *.c)
+objects := $(addprefix $(target_path)/,		\
+				$(subst .c,.o, $(sources)))
+results := $(subst .o,,$(objects))
+
+.PHONY : results
+
+results : $(results)
+
+% : %.o
+	$(CC) $< $(LD_FLAGS) -o $@
+
+$(objects) : $(target_path)/%.o : %.c
+	$(CC) $< $(CFLAGS) -o $@
